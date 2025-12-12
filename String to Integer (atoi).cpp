@@ -20,7 +20,7 @@ class Solution {
     }
 
     int start;
-    if (idx < n && isNumber(s[idx]))
+    if (isNumber(s[idx]))
       start = idx;
     else
       return 0;
