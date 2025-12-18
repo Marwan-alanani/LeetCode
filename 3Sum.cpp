@@ -5,53 +5,24 @@ using namespace std;
 class Solution {
  public:
   vector<vector<int>> threeSum(vector<int>& nums) {
-    map<int, int> count;
+    sort(nums.begin(), nums.end());
     int n = nums.size();
-    for (int i = 0; i < n; i++) {
-      count[nums[i]]++;
-    }
-
-    vector<int> filter;
-
-    for (auto& [k, v] : count) {
-      for (int i = 0; i < min(v, 3); i++) {
-        filter.push_back(k);
-      }
-    }
-    n = filter.size();
     vector<vector<int>> ans;
-    for (int i = 0; i < n;) {
-      if (filter[i] > 0) break;
-      for (int j = i + 1; j < n;) {
-        if (filter[i] + filter[j] > 0) break;
-        int lo = j + 1;
-        int hi = n - 1;
-        int mid;
-        int value = -1 * (filter[i] + filter[j]);
-        while (lo <= hi) {
-          mid = (lo + hi) / 2;
-          if (filter[mid] == value) {
-            break;
-          } else if (filter[mid] > value) {
-            hi = mid - 1;
-          } else {
-            lo = mid + 1;
-          }
-        }
-        if (filter[mid] + filter[i] + filter[j] == 0 && mid > j) {
-          ans.push_back({filter[i], filter[j], filter[mid]});
-        }
-        int prev = filter[j];
-        while (j < n && filter[j] == prev) {
-          prev = filter[j];
-          j++;
-        }
-      }
-
-      int prev = filter[i];
-      while (i < n && filter[i] == prev) {
-        prev = filter[i];
-        i++;
+    for (int i = 0; i < n; i++) {
+      int cur = nums[i];
+      if (nums[i] > 0 || (i > 0 && cur == nums[i - 1])) continue;
+      int lo = i + 1, hi = n - 1;
+      while (lo < hi) {
+        if (cur + nums[lo] + nums[hi] == 0) {
+          ans.push_back({cur, nums[lo], nums[hi]});
+          while (lo < hi && nums[lo] == nums[lo + 1]) lo++;
+          while (lo < hi && nums[hi] == nums[hi - 1]) hi--;
+          lo++;
+          hi--;
+        } else if (cur + nums[lo] + nums[hi] < 0)
+          lo++;
+        else
+          hi--;
       }
     }
     return ans;
