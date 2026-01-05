@@ -18,7 +18,6 @@ class Solution {
         st.push(ch);
       }
     }
-    if (st.size() == 0) return true;
-    return false;
+    return st.size() == 0;
   }
 };
