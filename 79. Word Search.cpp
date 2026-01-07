@@ -19,10 +19,8 @@ class Solution {
     this->vis = vector<vector<bool>>(n, vector<bool>(m));
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < m; j++) {
-        if (board[i][j] == word[idx]) {
-          if (dfs(i, j)) {
-            return true;
-          }
+        if (dfs(i, j)) {
+          return true;
         }
       }
     }
@@ -30,19 +28,17 @@ class Solution {
   }
 
   bool dfs(int r, int c) {
+    if (!valid(r, c) || vis[r][c] || board[r][c] != word[idx]) return false;
     idx++;
     if (idx == word.size()) return true;
     vis[r][c] = true;
     for (auto& [dr, dc] : dir) {
       int row = r + dr;
       int col = c + dc;
-      if (valid(row, col) && !vis[row][col] && board[row][col] == word[idx]) {
-        if (dfs(row, col)) return true;
-      }
+      if (dfs(row, col)) return true;
     }
-
-    vis[r][c] = false;
     idx--;
+    vis[r][c] = false;
     return false;
   }
 
